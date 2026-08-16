@@ -1,0 +1,104 @@
+{
+  "project_name": "The Thread That Grew",
+  "app_type": "Interactive scroll-driven digital art (single-page emotional web experience)",
+  "theme": {
+    "mode": "dark",
+    "rationale": "Requires a dim, intimate, and warm environment (candlelight, old family photographs) to emphasize the illuminated thread, glowing diya, and emotional storytelling. Dark theme allows the gold/red thread and flowers to pop beautifully."
+  },
+  "colors": {
+    "background": {
+      "primary": "#1a0f0f",
+      "secondary": "#12121f",
+      "texture_overlay": "rgba(0,0,0,0.4)"
+    },
+    "text": {
+      "primary": "#f5ead6",
+      "secondary": "#d8cbb6",
+      "muted": "#a69b87",
+      "forbidden": "#ffffff"
+    },
+    "accents": {
+      "gold_primary": "#e8b84b",
+      "gold_dark": "#d4a017",
+      "red_primary": "#c0392b",
+      "red_dark": "#9b2d2d"
+    }
+  },
+  "typography": {
+    "headings": {
+      "font_family": "'Eczar', 'Rozha One', serif",
+      "weight": "600",
+      "style": "Elegant Devanagari-influenced serif, tight tracking."
+    },
+    "body": {
+      "font_family": "'Mukta', 'Karla', sans-serif",
+      "weight": "400",
+      "style": "Soft, readable humanist sans for intimate memory lines."
+    },
+    "signature": {
+      "font_family": "'Caveat', cursive",
+      "weight": "400",
+      "style": "Handwritten style for the final closing message."
+    },
+    "import_instructions": "Import 'Eczar', 'Mukta', and 'Caveat' from Google Fonts."
+  },
+  "visual_enhancers": {
+    "textures": [
+      {
+        "name": "Dark Vintage Paper",
+        "url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHwxfHxkYXJrJTIwdmludGFnZSUyMHBhcGVyJTIwdGV4dHVyZXxlbnwwfHx8fDE3ODY5MDc2Njh8MA&ixlib=rb-4.1.0&q=85",
+        "usage": "Use as a fixed background overlay with low opacity (10-15%) and mix-blend-mode: multiply or overlay to give a tactile, handcrafted feel."
+      }
+    ],
+    "lighting": "Use radial-gradients behind the active flower and the final Rakhi to simulate diya (oil lamp) candlelight.",
+    "thread_styling": "The central thread should use an SVG <path>. Stroke should have a subtle drop-shadow or a url(#gold-gradient) to simulate silk shimmer."
+  },
+  "media": {
+    "image_urls": {
+      "diya_lamp": {
+        "url": "https://images.unsplash.com/photo-1574266742257-41460b7992ee?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzR8MHwxfHNlYXJjaHwyfHxkaXlhJTIwb2lsJTIwbGFtcCUyMGRhcmt8ZW58MHx8fHwxNzg2OTA3NjYyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Illuminated diya lamp to be used near the final message, potentially masked or blended into the dark background."
+      }
+    },
+    "svg_requirements": "Main agent MUST create raw inline SVGs for: 1. The main vertical thread path, 2. The looping Rakhi knot path, 3. Lotus flower, 4. Marigold flower, 5. Mogra flower. Do not use external image links for these as they need to be animated (drawn/scaled) via Framer Motion."
+  },
+  "motion_and_interactions": {
+    "library": "Framer Motion (useScroll, useTransform, motion.path, motion.div)",
+    "scroll_thread": "The vertical thread is an SVG path running down the page. Use Framer Motion's useScroll to map scroll progress to the SVG path's strokeDasharray/strokeDashoffset so it 'draws' as the user scrolls.",
+    "blooming_sequence": "As the thread draws past specific scroll thresholds, trigger the respective flower SVG to scale from 0 to 1 with an elastic/spring easing. Reveal the paired memory text with a slow fade and slight upward translation.",
+    "receding_trail": "When a new flower blooms, previous flowers should scale down to 0.6 and decrease opacity to 40% to keep focus on the current memory.",
+    "interactive_knot": "At the bottom, the thread forms an incomplete loop. A prominent, pulsing 'loose end' dot/button says 'Tie the last knot'. Clicking it completes the SVG path drawing, triggers an explosion of glowing radial gradients (candlelight bloom), and reveals the final message."
+  },
+  "layouts_and_grids": {
+    "page_structure": "A single extremely tall container (e.g., 600vh) to allow for slow, deliberate scrolling.",
+    "thread_alignment": "Mobile: Thread runs straight down the middle or slightly off-center, flowers alternate left and right. Desktop: Thread runs down the center, text on one side, flower on the thread.",
+    "spacing": "Massive spacing between memory nodes (at least 70-100vh apart) so only one memory is in focus at a time."
+  },
+  "components": {
+    "ThreadExperience": "Main scroll-driven component containing the SVG path and memory nodes.",
+    "MemoryNode": "Takes memory text, flower type, and alignment. Contains the Framer Motion visibility triggers.",
+    "RakhiClimax": "The final interactive section with the tie-the-knot button and completion animation.",
+    "PersonalizationForm": "A beautiful multi-step form (using Shadcn UI customized to the dark aesthetic) that collects sender name, sister name, flower type, thread color, and 6 memory lines. Generates a URL with base64 encoded JSON parameter.",
+    "Form_Requirements": "Use Shadcn Input, Select, Button. Remove default Vercel/Stripe styles. Use transparent inputs with bottom borders or solid dark fills with gold borders. MUST be fully responsive."
+  },
+  "instructions_to_main_agent": [
+    "Read the URL query parameters on mount to determine if this is a shared link (view mode) or if we should show the creator form (edit mode). If no params, default to Rithi & Rahul with Lotus/Gold.",
+    "Build the multi-step personalization form first, or conditionally render the experience based on URL params.",
+    "Implement the scroll-driven SVG thread carefully. Use a fixed container for the SVG and scroll the content over it, or make the SVG span the entire height.",
+    "Create beautiful, simplified geometric or handcrafted-looking inline SVGs for Marigold, Lotus, and Mogra. They should look like Indian motifs, not generic icons.",
+    "Ensure 'Tie the last knot' is a clear interactive climax. The experience shouldn't end just by scrolling.",
+    "Incorporate the 'dark vintage paper' texture as a fixed overlay with pointer-events: none.",
+    "Follow the typography precisely. Never use pure white text.",
+    "Apply data-testid to all interactive elements."
+  ],
+  "universal_guidelines": [
+    "You tend to converge toward generic outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Do not use generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "DO NOT apply universal transition (e.g., transition: all).",
+    "DO NOT center align the app container (.App { text-align: center; }).",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "NEVER use AI assistant Emoji characters like \ud83e\udd16\ud83e\udde0\ud83d\udcad\ud83d\udca1\ud83d\udd2e\ud83c\udfaf for icons."
+  ]
+}
